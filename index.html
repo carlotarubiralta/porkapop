@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porkapop - Listado de Anuncios</title>
+    <link rel="stylesheet" href="output.css">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-md p-4 flex justify-between items-center">
+        <img src="kc-logo.png" alt="Logo" class="h-10">
+        <nav class="space-x-4">
+            <a id="login-btn" href="login.html" class="text-blue-500 hover:text-blue-700">Iniciar Sesión</a>
+            <a id="signup-btn" href="signup.html" class="text-blue-500 hover:text-blue-700">Regístrate</a>
+            <span id="user-greeting" class="hidden text-gray-700"></span>
+            <button id="logout-btn" class="hidden bg-red-500 text-white px-4 py-2 rounded">Cerrar Sesión</button>
+        </nav>
+    </header>
+    <main id="product-list" class="p-4">
+        <div class="flex justify-end mb-4">
+            <a id="create-ad-btn" href="createProduct.html" class="hidden bg-blue-500 text-white px-4 py-2 rounded">Crear Anuncio</a>
+        </div>
+        <!-- Aquí se cargará el listado de anuncios -->
+    </main>
+    <script type="module" src="index/index.js"></script>
+</body>
+</html>

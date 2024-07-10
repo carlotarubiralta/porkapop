@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porkapop - Registro</title>
+    <link rel="stylesheet" href="output.css">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-md p-4 flex justify-between items-center">
+        <img src="kc-logo.png" alt="Logo" class="h-10">
+    </header>
+    <main class="p-4">
+        <h1 class="text-2xl font-bold mb-4">Registrarse</h1>
+        <form id="signup-form" class="bg-white p-4 rounded shadow">
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2" for="username">Usuario</label>
+                <input class="w-full p-2 border rounded" type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2" for="password">Contraseña</label>
+                <input class="w-full p-2 border rounded" type="password" id="password" name="password" required autocomplete="new-password">
+            </div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded" type="submit">Registrarse</button>
+        </form>
+    </main>
+    <script type="module" src="signup/signup.js"></script>
+</body>
+</html>
