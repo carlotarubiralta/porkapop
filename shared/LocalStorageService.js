@@ -1,12 +1,11 @@
 // porkapop/shared/LocalStorageService.js
 class LocalStorageService {
-    static setItem(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
+    static getItem(key) {
+        return localStorage.getItem(key);
     }
 
-    static getItem(key) {
-        const value = localStorage.getItem(key);
-        return value ? JSON.parse(value) : null;
+    static setItem(key, value) {
+        localStorage.setItem(key, value);
     }
 
     static removeItem(key) {
@@ -14,4 +13,4 @@ class LocalStorageService {
     }
 }
 
-export default LocalStorageService;
+export { LocalStorageService as localStorageService };

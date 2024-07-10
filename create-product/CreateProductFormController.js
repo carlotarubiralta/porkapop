@@ -3,36 +3,32 @@ import ProductService from '../shared/ProductService.js';
 import AuthService from '../shared/AuthService.js';
 
 class CreateProductFormController {
-    constructor(formElement) {
-        this.formElement = formElement;
-        this.addEventListeners();
+    constructor() {
+        this.init();
     }
 
-    addEventListeners() {
-        this.formElement.addEventListener('submit', async (event) => {
+    init() {
+        const formElement = document.getElementById('create-product-form');
+        formElement.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const formData = new FormData(this.formElement);
-            const product = {
+
+            const formData = new FormData(formElement);
+            const newProduct = {
                 title: formData.get('title'),
                 description: formData.get('description'),
-                price: formData.get('price'),
+                price: parseFloat(formData.get('price')),
                 type: formData.get('type'),
-                image: formData.get('image')
+                image: formData.get('image') // Asegúrate de que esto sea una URL
             };
 
-            try {
-                const token = AuthService.getToken();
-                if (!token) {
-                    alert('Debes iniciar sesión para crear un anuncio');
-                    window.location.href = 'login.html';
-                    return;
-                }
+            const token = AuthService.getToken();
 
-                await ProductService.createProduct(product, token);
-                alert('Anuncio creado con éxito');
+            try {
+                await ProductService.createProduct(newProduct, token);
+                alert('Producto creado con éxito');
                 window.location.href = 'index.html';
             } catch (error) {
-                alert(`Error al crear el anuncio: ${error.message}`);
+                alert(`Error al crear el producto: ${error.message}`);
             }
         });
     }

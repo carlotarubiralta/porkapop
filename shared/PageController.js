@@ -1,4 +1,5 @@
 // porkapop/shared/PageController.js
+import { localStorageService } from './LocalStorageService.js';
 import AuthService from './AuthService.js';
 
 class PageController {
@@ -7,41 +8,43 @@ class PageController {
     }
 
     init() {
-        this.checkAuthState();
-        this.bindEvents();
+        const token = localStorageService.getItem('token');
+        if (token) {
+            this.setAuthState(true, AuthService.decodeToken(token));
+        } else {
+            this.setAuthState(false);
+        }
     }
 
-    checkAuthState() {
-        const token = AuthService.getToken();
-        const isLoggedIn = !!token;
-
-        const logoutBtn = document.getElementById('logout-btn');
+    setAuthState(isAuthenticated, user = null) {
         const loginBtn = document.getElementById('login-btn');
         const signupBtn = document.getElementById('signup-btn');
-        const userGreeting = document.getElementById('user-greeting');
-        const createAdBtn = document.getElementById('create-ad-btn');
-
-        if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'inline' : 'none';
-        if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'inline';
-        if (signupBtn) signupBtn.style.display = isLoggedIn ? 'none' : 'inline';
-        if (userGreeting) {
-            userGreeting.style.display = isLoggedIn ? 'inline' : 'none';
-            if (isLoggedIn) {
-                const userName = 'usuario'; // Puedes obtener el nombre del usuario del token si está disponible
-                userGreeting.innerText = `Hola, ${userName}!`;
-            }
-        }
-        if (createAdBtn) createAdBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
-    }
-
-    bindEvents() {
         const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                AuthService.logout();
-                window.location.reload();
-            });
+        const userGreeting = document.getElementById('user-greeting');
+
+        if (!loginBtn || !signupBtn || !logoutBtn || !userGreeting) {
+            console.error('One or more elements are not found in the DOM');
+            return;
         }
+
+        if (isAuthenticated) {
+            loginBtn.classList.add('hidden');
+            signupBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+            userGreeting.classList.remove('hidden');
+            userGreeting.textContent = `¡Hola, ${user.username}!`;
+        } else {
+            loginBtn.classList.remove('hidden');
+            signupBtn.classList.remove('hidden');
+            logoutBtn.classList.add('hidden');
+            userGreeting.classList.add('hidden');
+        }
+
+        logoutBtn.addEventListener('click', () => {
+            AuthService.logout();
+            this.setAuthState(false);
+            window.location.href = 'index.html';
+        });
     }
 }
 
