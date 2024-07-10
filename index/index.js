@@ -1,8 +1,8 @@
 // porkapop/index/index.js
 import ProductListController from './ProductListController.js';
-import PageController from '../shared/PageController.js';
+import HeaderController from '../shared/header/HeaderController.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    new PageController();
     new ProductListController();
+    new HeaderController(document.querySelector('header'));
 });

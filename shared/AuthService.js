@@ -41,6 +41,14 @@ class AuthService {
     static isAuthenticated() {
         return !!AuthService.getToken();
     }
+
+    static decodeToken(token) {
+        if (!token) {
+            return null;
+        }
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    }
 }
 
 export default AuthService;

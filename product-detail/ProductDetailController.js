@@ -1,20 +1,30 @@
-// porkapop/shared/ProductService.js
-import ApiService from './ApiService.js';
+// porkapop/product-detail/ProductDetailController.js
+import ProductService from '../shared/ProductService.js';
+import { renderProductDetail, renderError, renderLoading } from './productDetailView.js';
 
-class ProductService {
-    static async getProducts() {
-        return await ApiService.get('api/products');
+class ProductDetailController {
+    constructor() {
+        this.init();
     }
 
-    static async getProductById(id) {
-        return await ApiService.get(`api/products/${id}`);
-    }
+    async init() {
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
 
-    static async createProduct(product, token) {
-        return await ApiService.post('api/products', product, token);
-    }
+        if (!productId) {
+            renderError('ID de producto no especificado');
+            return;
+        }
 
-    // Otros métodos update, delete, etc.
+        renderLoading();
+
+        try {
+            const product = await ProductService.getProductById(productId);
+            renderProductDetail(product);
+        } catch (error) {
+            renderError(error.message);
+        }
+    }
 }
 
-export default ProductService;
+export default ProductDetailController;
