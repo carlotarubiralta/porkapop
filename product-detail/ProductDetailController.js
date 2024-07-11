@@ -1,10 +1,13 @@
-// porkapop/product-detail/ProductDetailController.js
 import ProductService from '../shared/ProductService.js';
 import AuthService from '../shared/AuthService.js';
-import { renderProductDetail, renderError, renderLoading, renderEditForm } from './productDetailView.js';
+import { renderProductDetail, renderEditForm } from './productDetailView.js';
+import NotificationView from '../shared/notification/notificationView.js';
+import SpinnerView from '../shared/spinner/spinnerView.js';
 
 class ProductDetailController {
     constructor() {
+        this.notificationView = new NotificationView();
+        this.spinnerView = new SpinnerView();
         this.init();
     }
 
@@ -16,11 +19,11 @@ class ProductDetailController {
 
         if (!productId) {
             console.error('ID de producto no especificado');
-            renderError('ID de producto no especificado');
+            this.notificationView.showError('ID de producto no especificado');
             return;
         }
 
-        renderLoading();
+        this.spinnerView.showSpinner();
         console.log(`Loading product with ID: ${productId}`);
 
         try {
@@ -32,6 +35,7 @@ class ProductDetailController {
             const isOwner = decodedToken && decodedToken.userId === product.userId;
 
             renderProductDetail(product, isOwner);
+            this.spinnerView.hideSpinner();
 
             if (isOwner) {
                 const deleteButton = document.getElementById('delete-ad-btn');
@@ -39,9 +43,11 @@ class ProductDetailController {
                     deleteButton.classList.remove('hidden');
                     deleteButton.addEventListener('click', async () => {
                         if (confirm('¿Estás seguro de que deseas eliminar este anuncio?')) {
+                            this.spinnerView.showSpinner();
                             console.log(`Deleting product with ID: ${this.productId}`);
                             await ProductService.deleteProduct(this.productId, token);
-                            alert('Anuncio eliminado con éxito');
+                            this.spinnerView.hideSpinner();
+                            this.notificationView.showSuccess('Anuncio eliminado con éxito');
                             window.location.href = 'index.html';
                         }
                     });
@@ -60,6 +66,7 @@ class ProductDetailController {
                     if (event.target && event.target.id === 'edit-product-form') {
                         event.preventDefault();
                         console.log('Submitting edit form...');
+                        this.spinnerView.showSpinner();
 
                         const formData = new FormData(event.target);
                         const updatedProduct = {
@@ -75,18 +82,21 @@ class ProductDetailController {
 
                         try {
                             await ProductService.updateProduct(this.productId, updatedProduct, token);
-                            alert('Anuncio actualizado con éxito');
+                            this.spinnerView.hideSpinner();
+                            this.notificationView.showSuccess('Anuncio actualizado con éxito');
                             const updatedProductFromServer = await ProductService.getProductById(this.productId);
                             renderProductDetail(updatedProductFromServer, isOwner);
                         } catch (error) {
-                            alert(`Error al actualizar el anuncio: ${error.message}`);
+                            this.spinnerView.hideSpinner();
+                            this.notificationView.showError(`Error al actualizar el anuncio: ${error.message}`);
                         }
                     }
                 });
             }
         } catch (error) {
+            this.spinnerView.hideSpinner();
             console.error('Error loading product:', error);
-            renderError(error.message);
+            this.notificationView.showError(error.message);
         }
     }
 }

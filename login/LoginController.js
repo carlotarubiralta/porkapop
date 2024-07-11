@@ -1,25 +1,34 @@
-// porkapop/login/LoginController.js
 import AuthService from '../shared/AuthService.js';
+import NotificationView from '../shared/notification/notificationView.js';
+import SpinnerView from '../shared/spinner/spinnerView.js';
+
 
 class LoginController {
-    constructor(formElement) {
-        this.formElement = formElement;
-        this.addEventListeners();
+    constructor() {
+        this.notificationView = new NotificationView();
+        this.spinnerView = new SpinnerView();
+        this.init();
     }
 
-    addEventListeners() {
-        this.formElement.addEventListener('submit', async (event) => {
+    init() {
+        const formElement = document.getElementById('login-form');
+        formElement.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const formData = new FormData(this.formElement);
+
+            this.spinnerView.showSpinner();
+
+            const formData = new FormData(formElement);
             const username = formData.get('username');
             const password = formData.get('password');
 
             try {
-                await AuthService.login(username, password);
-                alert('Login exitoso');
+                const response = await AuthService.login(username, password);
+                this.spinnerView.hideSpinner();
+                this.notificationView.showSuccess('Inicio de sesión exitoso');
                 window.location.href = 'index.html';
             } catch (error) {
-                alert(`Error al iniciar sesión: ${error.message}`);
+                this.spinnerView.hideSpinner();
+                this.notificationView.showError(`Error al iniciar sesión: ${error.message}`);
             }
         });
     }

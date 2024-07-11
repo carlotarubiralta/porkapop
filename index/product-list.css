@@ -1,0 +1,8 @@
+.product {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product:hover .border {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

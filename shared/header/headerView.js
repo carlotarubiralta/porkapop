@@ -1,5 +1,5 @@
-// porkapop/shared/headerView.js
-import AuthService from './AuthService.js';
+// porkapop/shared/header/headerView.js
+import AuthService from '../AuthService.js';
 
 export function updateHeader() {
     const token = AuthService.getToken();

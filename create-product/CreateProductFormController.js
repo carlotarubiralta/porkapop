@@ -1,8 +1,12 @@
 import ProductService from '../shared/ProductService.js';
 import AuthService from '../shared/AuthService.js';
+import NotificationView from '../shared/notification/notificationView.js';
+import SpinnerView from '../shared/spinner/spinnerView.js';
 
 class CreateProductFormController {
     constructor() {
+        this.notificationView = new NotificationView();
+        this.spinnerView = new SpinnerView();
         this.init();
     }
 
@@ -10,6 +14,8 @@ class CreateProductFormController {
         const formElement = document.getElementById('create-product-form');
         formElement.addEventListener('submit', async (event) => {
             event.preventDefault();
+
+            this.spinnerView.showSpinner();
 
             const formData = new FormData(formElement);
             const imageUrl = formData.get('image-url');
@@ -27,10 +33,12 @@ class CreateProductFormController {
 
             try {
                 await ProductService.createProduct(newProduct, token);
-                alert('Producto creado con éxito');
+                this.spinnerView.hideSpinner();
+                this.notificationView.showSuccess('Producto creado con éxito');
                 window.location.href = 'index.html';
             } catch (error) {
-                alert(`Error al crear el producto: ${error.message}`);
+                this.spinnerView.hideSpinner();
+                this.notificationView.showError(`Error al crear el producto: ${error.message}`);
             }
         });
     }

@@ -1,0 +1,62 @@
+/* porkapop/product-detail/product-detail.css */
+#product-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.product-image {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.product-info {
+    text-align: center;
+}
+
+.product-info h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.product-info p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-info .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.product-info .type {
+    font-size: 1rem;
+    color: #4a5568; /* Tailwind color gray-700 */
+    margin-top: 0.5rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.actions button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+}
+
+.actions .edit-btn {
+    background-color: #48bb78; /* Tailwind color green-500 */
+    color: white;
+}
+
+.actions .delete-btn {
+    background-color: #f56565; /* Tailwind color red-500 */
+    color: white;
+}
