@@ -2,10 +2,10 @@
 import ApiService from './ApiService.js';
 
 class ProductService {
-    static async getProducts(page = 1, limit = 8, category = '') {
+    static async getProducts(page = 1, limit = 8, searchQuery = '') {
         let endpoint = `products?_page=${page}&_limit=${limit}`;
-        if (category) {
-            endpoint += `&category=${category}`;
+        if (searchQuery) {
+            endpoint += `&q=${searchQuery}`;
         }
         return ApiService.get(endpoint);
     }

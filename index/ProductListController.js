@@ -1,4 +1,3 @@
-// porkapop/index/ProductListController.js
 import ProductService from '../shared/ProductService.js';
 import NotificationView from '../shared/notification/notificationView.js';
 import SpinnerView from '../shared/spinner/spinnerView.js';
@@ -11,7 +10,7 @@ class ProductListController {
         this.perPage = 8;
         this.productIdsLoaded = new Set();
         this.noMoreProducts = false;
-        this.categoryFilter = '';
+        this.searchQuery = '';
         this.init();
     }
 
@@ -24,16 +23,16 @@ class ProductListController {
             loadMoreBtn.addEventListener('click', () => this.loadMoreProducts());
         }
 
-        const categoryFilter = document.getElementById('category-filter');
-        if (categoryFilter) {
-            categoryFilter.addEventListener('change', (event) => this.handleCategoryFilter(event));
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (event) => this.handleSearch(event));
         }
     }
 
     async loadProducts() {
         this.spinnerView.showSpinner();
         try {
-            const products = await ProductService.getProducts(this.page, this.perPage, this.categoryFilter);
+            const products = await ProductService.getProducts(this.page, this.perPage, this.searchQuery);
             console.log(`Productos cargados (Página ${this.page}):`, products);
             if (products.length === 0 && this.page === 1) {
                 this.renderEmpty();
@@ -132,8 +131,8 @@ class ProductListController {
         }
     }
 
-    handleCategoryFilter(event) {
-        this.categoryFilter = event.target.value;
+    handleSearch(event) {
+        this.searchQuery = event.target.value;
         this.page = 1;
         this.productIdsLoaded.clear();
         this.noMoreProducts = false; // Reset the flag for new searches
