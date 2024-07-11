@@ -67,8 +67,8 @@ class ProductDetailController {
                             description: formData.get('description'),
                             price: parseFloat(formData.get('price')),
                             type: formData.get('type'),
-                            image: formData.get('image'),
-                            userId: product.userId // Mantener el userId original
+                            image: formData.get('image-url'),
+                            userId: product.userId
                         };
 
                         console.log('Updated product data:', updatedProduct);
@@ -76,7 +76,8 @@ class ProductDetailController {
                         try {
                             await ProductService.updateProduct(this.productId, updatedProduct, token);
                             alert('Anuncio actualizado con éxito');
-                            renderProductDetail(updatedProduct, true);
+                            const updatedProductFromServer = await ProductService.getProductById(this.productId);
+                            renderProductDetail(updatedProductFromServer, isOwner);
                         } catch (error) {
                             alert(`Error al actualizar el anuncio: ${error.message}`);
                         }

@@ -1,4 +1,3 @@
-// porkapop/create-product/CreateProductFormController.js
 import ProductService from '../shared/ProductService.js';
 import AuthService from '../shared/AuthService.js';
 
@@ -13,12 +12,15 @@ class CreateProductFormController {
             event.preventDefault();
 
             const formData = new FormData(formElement);
+            const imageUrl = formData.get('image-url');
+
             const newProduct = {
                 title: formData.get('title'),
                 description: formData.get('description'),
                 price: parseFloat(formData.get('price')),
                 type: formData.get('type'),
-                image: formData.get('image') // Asegúrate de que esto sea una URL
+                image: imageUrl,
+                userId: AuthService.decodeToken(AuthService.getToken()).userId
             };
 
             const token = AuthService.getToken();
