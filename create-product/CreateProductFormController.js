@@ -26,6 +26,7 @@ class CreateProductFormController {
                 price: parseFloat(formData.get('price')),
                 type: formData.get('type'),
                 image: imageUrl,
+                category: formData.get('category'), // Añadimos la categoría
                 userId: AuthService.decodeToken(AuthService.getToken()).userId
             };
 

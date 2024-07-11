@@ -2,31 +2,28 @@
 import ApiService from './ApiService.js';
 
 class ProductService {
-    static async getProducts(page = 1, perPage = 12, query = '') {
-        const endpoint = query
-            ? `products?_page=${page}&_limit=${perPage}&q=${query}`
-            : `products?_page=${page}&_limit=${perPage}`;
-        return await ApiService.get(endpoint);
+    static async getProducts(page = 1, limit = 8, category = '') {
+        let endpoint = `products?_page=${page}&_limit=${limit}`;
+        if (category) {
+            endpoint += `&category=${category}`;
+        }
+        return ApiService.get(endpoint);
+    }
+
+    static async createProduct(product, token) {
+        return ApiService.post('products', product, token);
     }
 
     static async getProductById(id) {
-        const endpoint = `products/${id}`;
-        return await ApiService.get(endpoint);
+        return ApiService.get(`products/${id}`);
     }
 
-    static async createProduct(product) {
-        const endpoint = 'products';
-        return await ApiService.post(endpoint, product);
+    static async updateProduct(id, product, token) {
+        return ApiService.put(`products/${id}`, product, token);
     }
 
-    static async updateProduct(id, product) {
-        const endpoint = `products/${id}`;
-        return await ApiService.put(endpoint, product);
-    }
-
-    static async deleteProduct(id) {
-        const endpoint = `products/${id}`;
-        return await ApiService.delete(endpoint);
+    static async deleteProduct(id, token) {
+        return ApiService.delete(`products/${id}`, token);
     }
 }
 

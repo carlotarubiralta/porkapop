@@ -1,62 +1,60 @@
-/* porkapop/product-detail/product-detail.css */
-#product-detail {
+/* product-detail.css */
+#product-detail-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    margin-top: 20px;
 }
 
-.product-image {
+#product-detail {
     width: 100%;
-    max-width: 300px;
-    border-radius: 0.5rem;
-    object-fit: cover;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5em;
 }
 
-.product-info {
+#product-detail img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#product-detail h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#product-detail p {
+    margin-bottom: 10px;
+}
+
+#edit-delete-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#edit-button, #delete-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
     text-align: center;
 }
 
-.product-info h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.product-info p {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.product-info .price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 1rem;
-}
-
-.product-info .type {
-    font-size: 1rem;
-    color: #4a5568; /* Tailwind color gray-700 */
-    margin-top: 0.5rem;
-}
-
-.actions {
-    display: flex;
-    gap: 1rem;
-}
-
-.actions button {
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-}
-
-.actions .edit-btn {
-    background-color: #48bb78; /* Tailwind color green-500 */
+#edit-button {
+    background-color: #007bff;
     color: white;
+    border: none;
 }
 
-.actions .delete-btn {
-    background-color: #f56565; /* Tailwind color red-500 */
+#delete-button {
+    background-color: #dc3545;
     color: white;
+    border: none;
 }
