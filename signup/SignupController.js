@@ -10,26 +10,40 @@ class SignupController {
     }
 
     init() {
-        const formElement = document.getElementById('signup-form');
-        formElement.addEventListener('submit', async (event) => {
-            event.preventDefault();
+        const signupForm = document.getElementById('signup-form');
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const formData = new FormData(signupForm);
+                const username = formData.get('username');
+                const password = formData.get('password');
 
-            this.spinnerView.showSpinner();
+                this.spinnerView.showSpinner();
+                try {
+                    const response = await AuthService.register(username, password);
+                    this.spinnerView.hideSpinner();
+                    this.notificationView.showSuccess('Usuario creado con éxito');
+                    // Redirigir a index.html con la sesión iniciada
+                    await this.loginUser(username, password);
+                } catch (error) {
+                    this.spinnerView.hideSpinner();
+                    this.notificationView.showError(`Error al crear el usuario: ${error.message}`);
+                }
+            });
+        }
+    }
 
-            const formData = new FormData(formElement);
-            const username = formData.get('username');
-            const password = formData.get('password');
-
-            try {
-                const response = await AuthService.register(username, password);
-                this.spinnerView.hideSpinner();
-                this.notificationView.showSuccess('Registro exitoso');
-                window.location.href = 'login.html';
-            } catch (error) {
-                this.spinnerView.hideSpinner();
-                this.notificationView.showError(`Error al registrar: ${error.message}`);
-            }
-        });
+    async loginUser(username, password) {
+        this.spinnerView.showSpinner();
+        try {
+            const response = await AuthService.login(username, password);
+            this.spinnerView.hideSpinner();
+            this.notificationView.showSuccess('Sesión iniciada con éxito');
+            window.location.href = 'index.html';
+        } catch (error) {
+            this.spinnerView.hideSpinner();
+            this.notificationView.showError(`Error al iniciar sesión: ${error.message}`);
+        }
     }
 }
 

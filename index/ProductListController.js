@@ -6,13 +6,15 @@ class ProductListController {
     constructor() {
         this.notificationView = new NotificationView();
         this.spinnerView = new SpinnerView();
+        this.page = 1;
+        this.perPage = 8; // Cambiado a 12 por tu configuración
+        this.totalProductsLoaded = 0;
+        this.productIdsLoaded = new Set(); // Mantener un seguimiento de los IDs de productos cargados
         this.init();
     }
 
     async init() {
-        this.page = 1;
-        this.perPage = 10;
-        this.loadProducts();
+        await this.loadProducts();
 
         const loadMoreBtn = document.getElementById('load-more-btn');
         if (loadMoreBtn) {
@@ -26,10 +28,18 @@ class ProductListController {
         this.spinnerView.showSpinner();
         try {
             const products = await ProductService.getProducts(this.page, this.perPage);
-            if (products.length === 0) {
+            if (products.length === 0 && this.page === 1) {
                 this.renderEmpty();
             } else {
-                this.renderProducts(products);
+                const newProducts = products.filter(product => !this.productIdsLoaded.has(product.id));
+                newProducts.forEach(product => this.productIdsLoaded.add(product.id));
+                this.totalProductsLoaded += newProducts.length;
+                this.renderProducts(newProducts);
+
+                // Si el número de productos cargados es menor que el número por página, significa que no hay más productos para cargar
+                if (newProducts.length < this.perPage) {
+                    this.hideLoadMoreButton();
+                }
             }
             this.spinnerView.hideSpinner();
         } catch (error) {
@@ -55,7 +65,6 @@ class ProductListController {
 
     renderProducts(products) {
         const productListElement = document.getElementById('product-list');
-        productListElement.innerHTML = ''; // Clear previous content
         products.forEach(product => {
             const productElement = document.createElement('a');
             productElement.className = 'product block';
@@ -71,6 +80,17 @@ class ProductListController {
             `;
             productListElement.appendChild(productElement);
         });
+    }
+
+    hideLoadMoreButton() {
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'none';
+            const noMoreProductsMsg = document.createElement('p');
+            noMoreProductsMsg.className = 'text-gray-500 mt-4';
+            noMoreProductsMsg.textContent = 'No hay más productos.';
+            loadMoreBtn.parentElement.appendChild(noMoreProductsMsg);
+        }
     }
 }
 

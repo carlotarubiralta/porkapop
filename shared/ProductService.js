@@ -2,24 +2,29 @@
 import ApiService from './ApiService.js';
 
 class ProductService {
-    static async getProducts() {
-        return await ApiService.get('products');
+    static async getProducts(page = 1, perPage = 8) {
+        const endpoint = `products?_page=${page}&_limit=${perPage}`;
+        return await ApiService.get(endpoint);
     }
 
     static async getProductById(id) {
-        return await ApiService.get(`products/${id}`);
+        const endpoint = `products/${id}`;
+        return await ApiService.get(endpoint);
     }
 
-    static async createProduct(product, token) {
-        return await ApiService.post('products', product, token);
+    static async createProduct(product) {
+        const endpoint = 'products';
+        return await ApiService.post(endpoint, product);
     }
 
-    static async deleteProduct(id, token) {
-        return await ApiService.delete(`products/${id}`, token);
+    static async updateProduct(id, product) {
+        const endpoint = `products/${id}`;
+        return await ApiService.put(endpoint, product);
     }
 
-    static async updateProduct(id, product, token) {
-        return await ApiService.put(`products/${id}`, product, token);
+    static async deleteProduct(id) {
+        const endpoint = `products/${id}`;
+        return await ApiService.delete(endpoint);
     }
 }
 
