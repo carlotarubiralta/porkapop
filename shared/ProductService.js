@@ -2,8 +2,10 @@
 import ApiService from './ApiService.js';
 
 class ProductService {
-    static async getProducts(page = 1, perPage = 8) {
-        const endpoint = `products?_page=${page}&_limit=${perPage}`;
+    static async getProducts(page = 1, perPage = 12, query = '') {
+        const endpoint = query
+            ? `products?_page=${page}&_limit=${perPage}&q=${query}`
+            : `products?_page=${page}&_limit=${perPage}`;
         return await ApiService.get(endpoint);
     }
 
