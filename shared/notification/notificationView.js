@@ -1,32 +1,45 @@
-// porkapop/shared/notification/NotificationView.js
-
 class NotificationView {
     constructor() {
-        this.notificationElement = document.createElement('div');
-        this.notificationElement.className = 'notification hidden';
-        document.body.appendChild(this.notificationElement);
-    }
-
-    showNotification(message, type = 'info') {
-        this.notificationElement.className = `notification ${type}`;
-        this.notificationElement.innerText = message;
-        this.notificationElement.classList.remove('hidden');
-
-        setTimeout(() => {
-            this.notificationElement.classList.add('hidden');
-        }, 3000);
-    }
-
-    showError(message) {
-        this.showNotification(message, 'error');
+        this.notificationContainer = document.createElement('div');
+        this.notificationContainer.className = 'fixed inset-0 flex items-center justify-center';
+        this.notificationContainer.style.zIndex = '9999';
+        this.notificationContainer.style.pointerEvents = 'none'; // Ensure it doesn't block other interactions
+        document.body.appendChild(this.notificationContainer);
+        console.log("Notification container added to DOM");
     }
 
     showSuccess(message) {
-        this.showNotification(message, 'success');
+        console.log("showSuccess called with message:", message);
+        this.showNotification(message, 'bg-green-500 text-white');
     }
 
-    showInfo(message) {
-        this.showNotification(message, 'info');
+    showError(message) {
+        console.log("showError called with message:", message);
+        this.showNotification(message, 'bg-red-500 text-white');
+    }
+
+    showNotification(message, className) {
+        console.log("showNotification called with message:", message, "and className:", className);
+        this.clearNotifications();
+        const notification = document.createElement('div');
+        notification.className = `p-4 mb-4 rounded shadow-lg ${className}`;
+        notification.textContent = message;
+        notification.style.maxWidth = '80%';
+        notification.style.textAlign = 'center';
+        notification.style.position = 'relative';
+
+        this.notificationContainer.appendChild(notification);
+        console.log("Notification appended to container:", notification);
+
+        setTimeout(() => {
+            notification.remove();
+            console.log("Notification removed");
+        }, 3000);
+    }
+
+    clearNotifications() {
+        this.notificationContainer.innerHTML = '';
+        console.log("Notifications cleared");
     }
 }
 

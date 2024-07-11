@@ -1,5 +1,5 @@
 // index/ProductListController.js
-import ApiService from '../shared/ApiService.js';
+/*import ApiService from '../shared/ApiService.js';
 import { renderProductList, renderError, renderLoading } from './productView.js';
 
 export default class ProductListController {

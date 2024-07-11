@@ -3,31 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Porkapop - Detalle del Anuncio</title>
+    <title>Detalle del Producto</title>
     <link rel="stylesheet" href="output.css">
-    <link rel="stylesheet" href="shared/notification/notification.css">
     <link rel="stylesheet" href="shared/spinner/spinner.css">
     <link rel="stylesheet" href="shared/header/header.css">
-    <link rel="stylesheet" href="product-detail/product-detail.css">
 </head>
 <body>
-    <header class="bg-dark-blue shadow-md p-4">
-        <div class="container mx-auto flex justify-around items-center">
-            <a href="index.html"><img src="logo-porkapop.png" alt="Logo" class="h-16"></a>
-            <nav class="space-x-4">
-                <a href="index.html" class="text-white hover:text-gray-300">Listado de anuncios</a>
-                <a id="login-btn" href="login.html" class="text-blue-500 hover:text-blue-700">Iniciar Sesión</a>
-                <a id="signup-btn" href="signup.html" class="text-blue-500 hover:text-blue-700">Regístrate</a>
-                <span id="user-greeting" class="hidden text-gray-300"></span>
-                <a id="create-ad-btn" href="createProduct.html" class="hidden bg-green-500 text-white px-4 py-2 rounded">Crear Anuncio</a>
-                <button id="logout-btn" class="hidden bg-red-500 text-white px-4 py-2 rounded">Cerrar Sesión</button>
-            </nav>
-        </div>
+    <header class="bg-dark-blue shadow-md p-4 flex justify-between items-center">
+        <a href="index.html"><img src="logo-porkapop.png" alt="Logo" class="h-16"></a>
+        <nav class="space-x-4">
+            <a href="index.html" class="text-white hover:text-gray-300">Listado de anuncios</a>
+            <a id="login-btn" href="login.html" class="text-blue-500 hover:text-blue-700">Iniciar Sesión</a>
+            <a id="signup-btn" href="signup.html" class="text-blue-500 hover:text-blue-700">Regístrate</a>
+            <span id="user-greeting" class="hidden text-gray-300"></span>
+            <a id="create-ad-btn" href="createProduct.html" class="hidden bg-green-500 text-white px-4 py-2 rounded">Crear Anuncio</a>
+            <button id="logout-btn" class="hidden bg-red-500 text-white px-4 py-2 rounded">Cerrar Sesión</button>
+        </nav>
     </header>
-    <main>
-        <div id="product-detail" class="bg-white shadow-md rounded p-4">
-            <!-- Detalles del producto se cargarán aquí -->
-        </div>
+    <main id="main-content" class="container mx-auto p-4">
+        <div id="product-detail" class="bg-white shadow-md rounded p-4"></div>
+        <button id="edit-product-button" class="hidden bg-blue-500 text-white px-4 py-2 rounded mt-4">Editar Producto</button>
+        <button id="delete-product-button" class="hidden bg-red-500 text-white px-4 py-2 rounded mt-4">Eliminar Producto</button>
     </main>
     <script type="module" src="product-detail/product-detail.js"></script>
 </body>

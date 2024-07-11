@@ -1,21 +1,25 @@
-// porkapop/shared/spinner/SpinnerView.js
-
 class SpinnerView {
     constructor() {
-        this.spinnerElement = document.createElement('div');
-        this.spinnerElement.className = 'spinner hidden';
-        this.spinnerElement.innerHTML = `<div class="spinner-border" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>`;
-        document.body.appendChild(this.spinnerElement);
+        this.spinnerContainer = document.createElement('div');
+        this.spinnerContainer.className = 'fixed inset-0 flex items-center justify-center';
+        this.spinnerContainer.style.zIndex = '9998';
+        this.spinnerContainer.style.display = 'none';
+        this.spinnerContainer.innerHTML = `
+            <div class="dot-spinner">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        `;
+        document.body.appendChild(this.spinnerContainer);
     }
 
     showSpinner() {
-        this.spinnerElement.classList.remove('hidden');
+        this.spinnerContainer.style.display = 'flex';
     }
 
     hideSpinner() {
-        this.spinnerElement.classList.add('hidden');
+        this.spinnerContainer.style.display = 'none';
     }
 }
 

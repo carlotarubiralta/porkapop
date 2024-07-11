@@ -1,4 +1,3 @@
-// porkapop/shared/header/headerView.js
 import AuthService from '../AuthService.js';
 
 export function updateHeader() {
@@ -21,8 +20,11 @@ export function updateHeader() {
         if (logoutBtn) {
             logoutBtn.classList.remove('hidden');
             logoutBtn.addEventListener('click', () => {
-                AuthService.logout();
-                window.location.href = 'index.html';
+                console.log("Logout button clicked");
+                if (confirm("¿Seguro que quieres cerrar la sesión?")) {
+                    AuthService.logout();
+                    window.location.href = 'login.html';
+                }
             });
         }
 

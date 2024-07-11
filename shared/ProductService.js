@@ -1,4 +1,3 @@
-// porkapop/shared/ProductService.js
 import ApiService from './ApiService.js';
 
 class ProductService {
@@ -9,21 +8,20 @@ class ProductService {
         }
         return ApiService.get(endpoint);
     }
-
-    static async createProduct(product, token) {
-        return ApiService.post('products', product, token);
-    }
-
     static async getProductById(id) {
-        return ApiService.get(`products/${id}`);
+        return await ApiService.get(`products/${id}`);
     }
 
-    static async updateProduct(id, product, token) {
-        return ApiService.put(`products/${id}`, product, token);
+    static async createProduct(productData, token) {
+        return await ApiService.post(`products`, productData, token);
+    }
+
+    static async updateProduct(id, productData, token) {
+        return await ApiService.put(`products/${id}`, productData, token);
     }
 
     static async deleteProduct(id, token) {
-        return ApiService.delete(`products/${id}`, token);
+        return await ApiService.delete(`products/${id}`, token);
     }
 }
 

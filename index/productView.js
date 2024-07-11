@@ -1,4 +1,4 @@
-// porkapop/index/productView.js
+// productView.js
 export function renderProductList(products) {
     const productListElement = document.getElementById('product-list');
     productListElement.innerHTML = products.map(product => `
@@ -14,12 +14,12 @@ export function renderProductList(products) {
     `).join('');
 }
 
-export function renderError(errorMessage) {
-    const productListElement = document.getElementById('product-list');
-    productListElement.innerHTML = `<p class="text-red-500">Error al cargar los anuncios: ${errorMessage}</p>`;
-}
-
 export function renderLoading() {
     const productListElement = document.getElementById('product-list');
     productListElement.innerHTML = `<p class="text-gray-500">Cargando anuncios...</p>`;
+}
+
+export function renderError(errorMessage) {
+    const productListElement = document.getElementById('product-list');
+    productListElement.innerHTML = `<p class="text-red-500">Error al cargar los anuncios: ${errorMessage}</p>`;
 }

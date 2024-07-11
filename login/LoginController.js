@@ -2,7 +2,6 @@ import AuthService from '../shared/AuthService.js';
 import NotificationView from '../shared/notification/notificationView.js';
 import SpinnerView from '../shared/spinner/spinnerView.js';
 
-
 class LoginController {
     constructor() {
         this.notificationView = new NotificationView();
@@ -24,8 +23,13 @@ class LoginController {
             try {
                 const response = await AuthService.login(username, password);
                 this.spinnerView.hideSpinner();
-                this.notificationView.showSuccess('Inicio de sesión exitoso');
-                window.location.href = 'index.html';
+                this.notificationView.showSuccess('Inicio de sesión exitoso. Redirigiendo a la lista de productos...');
+
+                // Esperar 3 segundos antes de redirigir
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+
             } catch (error) {
                 this.spinnerView.hideSpinner();
                 this.notificationView.showError(`Error al iniciar sesión: ${error.message}`);

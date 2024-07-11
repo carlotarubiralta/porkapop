@@ -2,7 +2,7 @@ import ProductService from '../shared/ProductService.js';
 import AuthService from '../shared/AuthService.js';
 import NotificationView from '../shared/notification/notificationView.js';
 import SpinnerView from '../shared/spinner/spinnerView.js';
-import { renderProductDetail, renderEditForm, renderError } from './productDetailView.js';
+import { renderProductDetail } from './productDetailView.js';
 
 class ProductDetailController {
     constructor() {
@@ -13,61 +13,89 @@ class ProductDetailController {
 
     async init() {
         const params = new URLSearchParams(window.location.search);
-        const productId = params.get('id');
+        const id = params.get('id');
+        console.log("Product ID:", id);
 
-        if (!productId) {
-            renderError('ID de producto no especificado');
+        if (!id) {
+            this.notificationView.showError('ID de producto no especificado');
             return;
         }
 
         try {
             this.spinnerView.showSpinner();
-            const product = await ProductService.getProductById(productId);
+            const product = await ProductService.getProductById(id);
+            console.log("Product Data:", product);
             this.spinnerView.hideSpinner();
 
-            const user = AuthService.decodeToken(AuthService.getToken());
+            if (!product) {
+                this.notificationView.showError('Producto no encontrado');
+                return;
+            }
 
             renderProductDetail(product);
+            this.showEditAndDeleteButtons(product);
 
-            if (user && user.userId === product.userId) {
-                this.showEditDeleteButtons(productId, product);
-            }
         } catch (error) {
             this.spinnerView.hideSpinner();
             this.notificationView.showError(error.message);
         }
     }
 
-    showEditDeleteButtons(productId, product) {
-        const editButton = document.createElement('a');
-        editButton.textContent = 'Editar';
-        editButton.className = 'bg-blue-500 text-white p-2 rounded mt-4 inline-block';
-        editButton.href = `editProduct.html?id=${productId}`;
+    showEditAndDeleteButtons(product) {
+        const token = AuthService.getToken();
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Eliminar';
-        deleteButton.className = 'bg-red-500 text-white p-2 rounded mt-4 ml-2';
-        deleteButton.addEventListener('click', async () => {
-            const confirmDelete = confirm('¿Estás seguro de que quieres eliminar este producto?');
-            if (confirmDelete) {
-                try {
-                    await ProductService.deleteProduct(productId, AuthService.getToken());
-                    this.notificationView.showSuccess('Producto eliminado con éxito');
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    this.notificationView.showError(`Error al eliminar el producto: ${error.message}`);
-                }
+        const currentUser = AuthService.decodeToken(token);
+        if (!currentUser) {
+            console.error('Token could not be decoded');
+            return;
+        }
+
+        const editButton = document.getElementById('edit-product-button');
+        const deleteButton = document.getElementById('delete-product-button');
+
+        if (currentUser.userId === product.userId) {
+            if (editButton) {
+                editButton.classList.remove('hidden');
+                editButton.addEventListener('click', () => {
+                    window.location.href = `editProduct.html?id=${product.id}`;
+                });
             }
-        });
 
-        const detailElement = document.getElementById('product-detail');
-        detailElement.appendChild(editButton);
-        detailElement.appendChild(deleteButton);
-    }
+            if (deleteButton) {
+                deleteButton.classList.remove('hidden');
+                deleteButton.addEventListener('click', async () => {
+                    if (!confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+                        return;
+                    }
 
-    renderError(message) {
-        const productDetailElement = document.getElementById('product-detail');
-        productDetailElement.innerHTML = `<p class="text-red-500">${message}</p>`;
+                    try {
+                        this.spinnerView.showSpinner();
+                        await ProductService.deleteProduct(product.id, token);
+                        this.spinnerView.hideSpinner();
+                        this.notificationView.showSuccess('Producto eliminado con éxito. Redirigiendo a la lista de productos...');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 3000);
+
+                    } catch (error) {
+                        this.spinnerView.hideSpinner();
+                        this.notificationView.showError(`Error al eliminar el producto: ${error.message}`);
+                    }
+                });
+            }
+        } else {
+            if (editButton) {
+                editButton.classList.add('hidden');
+            }
+            if (deleteButton) {
+                deleteButton.classList.add('hidden');
+            }
+        }
     }
 }
 

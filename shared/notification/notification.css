@@ -1,29 +1,22 @@
-/* porkapop/shared/notification/notification.css */
+.fixed.inset-0.flex.items-center.justify-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
 
-.notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 14px;
+.p-4.mb-4.rounded.shadow-lg {
+    pointer-events: auto;
+}
+
+.bg-green-500 {
+    background-color: #48bb78; /* Verde */
+}
+
+.bg-red-500 {
+    background-color: #f56565; /* Rojo */
+}
+
+.text-white {
     color: white;
-    z-index: 1000;
-    display: none;
-}
-
-.notification.info {
-    background-color: #2196F3;
-}
-
-.notification.success {
-    background-color: #4CAF50;
-}
-
-.notification.error {
-    background-color: #F44336;
-}
-
-.notification.show {
-    display: block;
 }

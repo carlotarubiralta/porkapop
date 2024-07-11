@@ -96,7 +96,7 @@ class ProductListController {
                         <h2 class="text-xl font-bold">${product.title}</h2>
                         <p>${product.description}</p>
                         <p class="font-bold">${product.price} €</p>
-                        <p class="text-gray-500">${product.category}</p> <!-- Añadimos la categoría aquí -->
+                        <p class="text-gray-500">${product.category}</p>
                         <p>${product.type}</p>
                     </div>
                 `;
@@ -135,14 +135,14 @@ class ProductListController {
         this.searchQuery = event.target.value;
         this.page = 1;
         this.productIdsLoaded.clear();
-        this.noMoreProducts = false; // Reset the flag for new searches
+        this.noMoreProducts = false;
         const loadMoreBtn = document.getElementById('load-more-btn');
         if (loadMoreBtn) {
-            loadMoreBtn.style.display = 'block'; // Reset the load more button
+            loadMoreBtn.style.display = 'block';
         }
         const noMoreProductsMsg = document.getElementById('no-more-products-msg');
         if (noMoreProductsMsg) {
-            noMoreProductsMsg.remove(); // Remove any existing "no more products" message
+            noMoreProductsMsg.remove();
         }
         this.loadProducts();
     }

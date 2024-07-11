@@ -1,4 +1,3 @@
-// porkapop/create-product/create-product.js
 import CreateProductPageController from './CreateProductPageController.js';
 import HeaderController from '../shared/header/HeaderController.js';
 

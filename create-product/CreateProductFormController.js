@@ -12,8 +12,14 @@ class CreateProductFormController {
 
     init() {
         const formElement = document.getElementById('create-product-form');
+        if (!formElement) {
+            console.error("Form element not found");
+            return;
+        }
+
         formElement.addEventListener('submit', async (event) => {
             event.preventDefault();
+            console.log("Form submitted");  // Verificar que se está enviando el formulario
 
             this.spinnerView.showSpinner();
 
@@ -26,17 +32,24 @@ class CreateProductFormController {
                 price: parseFloat(formData.get('price')),
                 type: formData.get('type'),
                 image: imageUrl,
-                category: formData.get('category'), // Añadimos la categoría
+                category: formData.get('category'),
                 userId: AuthService.decodeToken(AuthService.getToken()).userId
             };
+
+            console.log("Product Data to Create:", newProduct);  // Verificar los datos antes de enviarlos
 
             const token = AuthService.getToken();
 
             try {
                 await ProductService.createProduct(newProduct, token);
-                this.spinnerView.hideSpinner();
-                this.notificationView.showSuccess('Producto creado con éxito');
-                window.location.href = 'index.html';
+                this.notificationView.showSuccess('Producto creado con éxito. Redirigiendo a la lista de productos...');
+                
+                // Esperar 3 segundos antes de redirigir
+                setTimeout(() => {
+                    this.spinnerView.hideSpinner();
+                    window.location.href = 'index.html';
+                }, 3000);
+
             } catch (error) {
                 this.spinnerView.hideSpinner();
                 this.notificationView.showError(`Error al crear el producto: ${error.message}`);
